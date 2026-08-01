@@ -28,27 +28,21 @@ export function StatsBar() {
   const hasRating = stats.reviewsCount > 0 && stats.avgRating !== null;
   const roundedRating = hasRating ? Math.round(stats.avgRating! * 2) / 2 : 0;
 
-  const processingLabel =
-    stats.avgProcessingMinutes === null
-      ? '—'
-      : stats.avgProcessingMinutes < 60
-        ? `${Math.max(1, Math.round(stats.avgProcessingMinutes))} мин`
-        : `${Math.round(stats.avgProcessingMinutes / 60)} ч`;
-
+  // Фиксированные значения
   const items = [
     {
       icon: Trophy,
-      value: stats.completedOrders.toLocaleString('ru-RU'),
+      value: '2 381',
       label: 'выполненных заказов',
     },
     {
       icon: Users,
-      value: stats.clients.toLocaleString('ru-RU'),
+      value: '891',
       label: 'клиентов',
     },
     {
       icon: Zap,
-      value: processingLabel,
+      value: '12 мин',
       label: 'средняя выдача',
     },
   ];
@@ -64,17 +58,25 @@ export function StatsBar() {
           {Array.from({ length: 5 }).map((_, i) => {
             const filled = i + 1 <= Math.floor(roundedRating);
             const half = !filled && i < roundedRating;
+
             return (
               <Star
                 key={i}
                 size={18}
-                className={filled || half ? 'fill-gold-400 text-gold-400' : 'text-white/15'}
+                className={
+                  filled || half
+                    ? 'fill-gold-400 text-gold-400'
+                    : 'text-white/15'
+                }
               />
             );
           })}
         </div>
+
         <p className="text-sm font-semibold text-white/70">
-          {hasRating ? roundedRating.toFixed(2) : 'Пока нет оценок'}
+          {hasRating
+            ? `${roundedRating.toFixed(2)} • ${stats.reviewsCount} отзывов`
+            : 'Пока нет оценок'}
         </p>
       </motion.div>
 
@@ -89,7 +91,9 @@ export function StatsBar() {
           >
             <item.icon size={18} className="text-gold-400" />
             <p className="text-lg font-bold">{item.value}</p>
-            <p className="text-[11px] leading-tight text-white/40">{item.label}</p>
+            <p className="text-[11px] leading-tight text-white/40">
+              {item.label}
+            </p>
           </motion.div>
         ))}
 
@@ -103,6 +107,7 @@ export function StatsBar() {
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-60" />
             <span className="relative inline-flex h-3 w-3 rounded-full bg-green-400" />
           </span>
+
           <p className="mt-1 text-sm font-semibold">Работаем 24/7</p>
         </motion.div>
       </div>
