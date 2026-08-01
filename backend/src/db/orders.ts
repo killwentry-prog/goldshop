@@ -140,6 +140,7 @@ export function getPublicStats(): {
     avgProcessingMinutes: avg.avgMin,
   };
 }
+export function getStats(): {
   ordersToday: number;
   ordersTotal: number;
   goldTotal: number;
