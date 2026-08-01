@@ -97,6 +97,7 @@ export async function notifyAdminNewReview(params: {
     // админ мог ещё не запускать бота или заблокировать его
   }
 }
+export async function notifyAdminNewOrder(params: {
   publicId: string;
   username: string | null;
   telegramId: number;
