@@ -57,6 +57,7 @@ export interface PublicStats {
   completedOrders: number;
   clients: number;
   avgProcessingMinutes: number | null;
+  totalGoldSold: number;
   avgRating: number | null;
   reviewsCount: number;
 }
