@@ -6,9 +6,20 @@ export const bot = new Telegraf(config.botToken);
 
 bot.start((ctx) => {
   ctx.reply(
-    `Добро пожаловать в ${config.shopName}!\n\nОткройте мини-приложение, чтобы купить Gold Standoff 2.`,
+    [
+      '👑 Добро пожаловать в ExpShop',
+      '',
+      'Здесь начинается быстрый и безопасный способ приобрести Gold для Standoff 2.',
+      '',
+      '💰 Выберите нужное количество Gold',
+      '⚡ Быстрая обработка заказа',
+      '🛡️ Безопасная покупка',
+      '💎 Премиальный сервис 24/7',
+      '',
+      'Нажмите «Открыть приложение» ниже, чтобы начать покупку.',
+    ].join('\n'),
     Markup.inlineKeyboard([
-      Markup.button.webApp('🛒 Открыть магазин', config.webAppUrl),
+      Markup.button.webApp('🛒 Открыть приложение', config.webAppUrl),
     ]),
   );
 });
