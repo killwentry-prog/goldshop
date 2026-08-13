@@ -28,21 +28,27 @@ export function StatsBar() {
   const hasRating = stats.reviewsCount > 0 && stats.avgRating !== null;
   const roundedRating = hasRating ? Math.round(stats.avgRating! * 2) / 2 : 0;
 
-  // Фиксированные значения
+  const processingLabel =
+    stats.avgProcessingMinutes === null
+      ? '—'
+      : stats.avgProcessingMinutes < 60
+        ? `${Math.max(1, Math.round(stats.avgProcessingMinutes))} мин`
+        : `${Math.round(stats.avgProcessingMinutes / 60)} ч`;
+
   const items = [
     {
       icon: Trophy,
-      value: '2 381',
+      value: stats.completedOrders.toLocaleString('ru-RU'),
       label: 'выполненных заказов',
     },
     {
       icon: Users,
-      value: '891',
+      value: stats.clients.toLocaleString('ru-RU'),
       label: 'клиентов',
     },
     {
       icon: Zap,
-      value: '12 мин',
+      value: processingLabel,
       label: 'средняя выдача',
     },
   ];
@@ -58,25 +64,17 @@ export function StatsBar() {
           {Array.from({ length: 5 }).map((_, i) => {
             const filled = i + 1 <= Math.floor(roundedRating);
             const half = !filled && i < roundedRating;
-
             return (
               <Star
                 key={i}
                 size={18}
-                className={
-                  filled || half
-                    ? 'fill-gold-400 text-gold-400'
-                    : 'text-white/15'
-                }
+                className={filled || half ? 'fill-gold-400 text-gold-400' : 'text-white/15'}
               />
             );
           })}
         </div>
-
         <p className="text-sm font-semibold text-white/70">
-          {hasRating
-            ? `${roundedRating.toFixed(2)} • ${stats.reviewsCount} отзывов`
-            : 'Пока нет оценок'}
+          {hasRating ? roundedRating.toFixed(2) : 'Пока нет оценок'}
         </p>
       </motion.div>
 
@@ -91,9 +89,7 @@ export function StatsBar() {
           >
             <item.icon size={18} className="text-gold-400" />
             <p className="text-lg font-bold">{item.value}</p>
-            <p className="text-[11px] leading-tight text-white/40">
-              {item.label}
-            </p>
+            <p className="text-[11px] leading-tight text-white/40">{item.label}</p>
           </motion.div>
         ))}
 
@@ -107,10 +103,24 @@ export function StatsBar() {
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-60" />
             <span className="relative inline-flex h-3 w-3 rounded-full bg-green-400" />
           </span>
-
           <p className="mt-1 text-sm font-semibold">Работаем 24/7</p>
         </motion.div>
       </div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.32 }}
+        className="glass flex items-center justify-between rounded-2xl p-4"
+      >
+        <div>
+          <p className="text-xs text-white/40">Продано Gold</p>
+          <p className="mt-1 text-xl font-black gold-text">
+            {stats.totalGoldSold.toLocaleString('ru-RU')}
+          </p>
+        </div>
+        <span className="text-2xl">💰</span>
+      </motion.div>
     </div>
   );
 }
