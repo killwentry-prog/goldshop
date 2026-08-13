@@ -1,15 +1,13 @@
 import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
 import { Star } from 'lucide-react';
 import { PageHeader } from '../components/PageHeader';
 import { GlassCard } from '../components/GlassCard';
 import { GoldButton } from '../components/GoldButton';
-import { SkeletonList, Skeleton } from '../components/Skeleton';
-import { api, PublicStats, Review } from '../lib/api';
+import { SkeletonList } from '../components/Skeleton';
+import { api, Review } from '../lib/api';
 
 export default function Reviews() {
   const [reviews, setReviews] = useState<Review[] | null>(null);
-  const [stats, setStats] = useState<PublicStats | null>(null);
   const [name, setName] = useState('');
   const [comment, setComment] = useState('');
   const [rating, setRating] = useState(5);
@@ -17,7 +15,6 @@ export default function Reviews() {
 
   useEffect(() => {
     api.getReviews().then(setReviews).catch(() => setReviews([]));
-    api.getStats().then(setStats).catch(() => undefined);
   }, []);
 
   async function submit() {
@@ -33,24 +30,6 @@ export default function Reviews() {
       <PageHeader title="Отзывы" subtitle="Что говорят наши клиенты" />
 
       <div className="px-5 space-y-3">
-        {!stats ? (
-          <Skeleton className="h-20 w-full" />
-        ) : (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="glass flex items-center justify-between rounded-2xl p-5"
-          >
-            <div>
-              <p className="text-xs text-white/40">Продано Gold</p>
-              <p className="mt-1 text-2xl font-black gold-text">
-                {stats.totalGoldSold.toLocaleString('ru-RU')}
-              </p>
-            </div>
-            <span className="text-3xl">💰</span>
-          </motion.div>
-        )}
-
         {reviews === null && <SkeletonList count={4} />}
 
         {reviews?.map((r, i) => (
