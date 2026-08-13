@@ -37,27 +37,27 @@ export function StatsBar() {
       >
         <div className="flex gap-0.5">
           {Array.from({ length: 5 }).map((_, i) => {
-            const isFull = i < 4;
-            const isHalf = i === 4;
+            const full = i < Math.floor(rating);
+            const half = i === Math.floor(rating) && rating % 1 !== 0;
 
             return (
               <div key={i} className="relative h-[18px] w-[18px]">
-                {/* Контур звезды */}
+                {/* Пустая звезда */}
                 <Star
                   size={18}
-                  className="absolute left-0 top-0 text-gold-400"
+                  className="absolute left-0 top-0 text-white/15"
                 />
 
-                {/* Полная желтая звезда */}
-                {isFull && (
+                {/* Полная звезда */}
+                {full && (
                   <Star
                     size={18}
                     className="absolute left-0 top-0 fill-gold-400 text-gold-400"
                   />
                 )}
 
-                {/* Половина пятой звезды */}
-                {isHalf && (
+                {/* Половина звезды */}
+                {half && (
                   <div className="absolute left-0 top-0 h-[18px] w-[9px] overflow-hidden">
                     <Star
                       size={18}
